@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-black font-wix">
+    <div
+      class="container h-fit w-3/6 bg-gradient-to-t from-[#00feba] to-[#5b548a] mx-auto mt-2 rounded-2xl"
+    >
+      <div class="search-container flex gap-4 items-center justify-center">
+        <input
+          type="text"
+          spellcheck="false"
+          placeholder="Enter Your City"
+          class="searchBox bg-[#ebfffc] rounded-full my-5 w-80 py-2 px-10 "
+        />
+        <div
+          class="search-icon bg-[#ebfffc] h-10 w-10 rounded-full hover:cursor-pointer"
+        >
+          <img src="images/search.png" class="h-5 w-4 m-[11.5px]" alt="" />
+        </div>
+      </div>
+      <div class="content text-[#ebfffc] mx-48 w-56">
+        <img src="images/clear.png" alt="" class="pic w-40 h-40 mx-9" />
+        <div class="temp text-center text-7xl mb-3">24°C</div>
+        <div class="city text-center text-3xl">New york</div>
+      </div>
+      <div class="max-min flex justify-between mx-56 my-4 text-[#ebfffc]">
+        <div class="max-temp flex gap-3">
+          <img src="images/left-arrow-svgrepo-com.svg" class="w-6 h-6" />
+          <p class="max">23°C</p>
+        </div>
+        <div class="min-temp flex gap-3">
+          <img src="images/left-arrow-svgrepo-com (1).svg" class="w-6 h-6" />
+          <p class="min">26°C</p>
+        </div>
+      </div>
+      <div
+        class="footer-content flex justify-between text-[#ebfffc] my-9 mx-20 pb-7"
+      >
+        <div class="left flex gap-4">
+          <img src="images/humidity.png" alt="" class="w-h-12 h-12" />
+          <div class="val">
+            <p class="text-3xl humidity">90%</p>
+            <p class="text-lg">Humidity</p>
+          </div>
+        </div>
+        <div class="right flex gap-4">
+          <img src="images/wind.png" alt="" class="w-h-12 h-12" />
+          <div class="val">
+            <p class="text-3xl speed">2.68km/hr</p>
+            <p class="text-lg">Wind Speed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let apiKey = "86b730b3711d3d699d641e6e3912dc96";
+      let apiUrl =
+        "https://api.openweathermap.org/data/2.5/weather?&units=metric";
+      let searchBox = document.querySelector(".searchBox");
+      let searchbtn = document.querySelector(".search-icon");
+      let pic = document.querySelector(".pic");
+      async function checkWeather(cityname) {
+        const response = await fetch(
+          apiUrl + `&q=${cityname}` + `&appid=${apiKey}`
+        );
+        var data = await response.json();
+        if (data.cod == 404) {
+          alert("No Data Found! Please try again.");
+        } else {
+          document.querySelector(".city").innerHTML = data.name;
+          document.querySelector(".temp").innerHTML =
+            Math.round(data.main.temp) + `°C`;
+          document.querySelector(".max").innerHTML =
+            Math.round(data.main.temp_max) + `°C`;
+          document.querySelector(".min").innerHTML =
+            Math.round(data.main.temp_min) + `°C`;
+          document.querySelector(".humidity").innerText =
+            data.main.humidity + `%`;
+          document.querySelector(".speed").innerHTML =
+            data.wind.speed + " km/hr";
+
+          //updating the picture
+          const weatherMain = data.weather[0].main;
+          console.log(weatherMain);
+          switch (weatherMain) {
+            case "Clouds":
+              pic.src = "images/clouds.png";
+            case "Drizzle":
+              pic.src = "images/clouds.png";
+            case "Mist":
+              pic.src = "images/clouds.png";
+            case "Rain":
+              pic.src = "images/clouds.png";
+            case "Snow":
+              pic.src = "images/clouds.png";
+            default:
+              pic.src = "images/clouds.png";
+          }
+        }
+      }
+      searchbtn.addEventListener("click", () => {
+        checkWeather(searchBox.value);
+      });
+      searchBox.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          checkWeather(searchBox.value);
+        }
+      });
+    </script>
+  </body>
+</html>
